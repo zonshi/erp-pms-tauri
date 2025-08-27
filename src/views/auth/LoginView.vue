@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { User, Lock } from '@element-plus/icons-vue'
+
+const router = useRouter()
 
 const loginForm = ref({
   username: '',
@@ -11,6 +14,10 @@ const loginForm = ref({
 const handleLogin = () => {
   console.log('Login attempt with:', loginForm.value)
   // 这里可以添加登录逻辑
+}
+
+const goToForgotPassword = () => {
+  router.push('/forgot-password')
 }
 </script>
 
@@ -52,7 +59,7 @@ const handleLogin = () => {
         <el-form-item>
           <div class="login-options">
             <el-checkbox v-model="loginForm.rememberMe">记住我</el-checkbox>
-            <el-link type="primary" :underline="false">忘记密码？</el-link>
+            <el-link type="primary" :underline="false" @click="goToForgotPassword">忘记密码？</el-link>
           </div>
         </el-form-item>
         
