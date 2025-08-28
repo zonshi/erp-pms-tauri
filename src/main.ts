@@ -2,28 +2,13 @@ import { createApp } from "vue";
 import ElementPlus from "element-plus";
 import 'element-plus/dist/index.css';
 import App from "./App.vue";
-import router from "./router.ts";
-import { initializeBaseData } from './service/auth/init';
+import router from "./router";
 import { setupPermissionDirectives } from './directives/permission';
-import { getDatabase } from './db';
 
-// 异步初始化应用
-async function initializeApp() {
+// 简化的应用初始化
+function initializeApp() {
   try {
     console.log('开始初始化应用...');
-    
-    // 等待数据库连接准备就绪
-    console.log('等待数据库连接...');
-    await getDatabase();
-    console.log('数据库连接成功');
-    
-    // 延迟一下，确保数据库迁移完成
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    // 初始化基础数据
-    console.log('开始初始化基础数据...');
-    await initializeBaseData();
-    console.log('基础数据初始化完成');
     
     // 创建并配置 Vue 应用
     const app = createApp(App);
