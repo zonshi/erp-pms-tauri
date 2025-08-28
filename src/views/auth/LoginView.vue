@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { User, Lock } from '@element-plus/icons-vue';
 import { login } from '../../service/auth';
 import { ElMessage } from 'element-plus';
 
-
-const router = useRouter()
+const router = useRouter();
+const route = useRoute();
 
 const loginForm = ref({
   username: '',
@@ -14,32 +14,49 @@ const loginForm = ref({
   rememberMe: false
 });
 
-// 处理登录
-const handleLogin = () => {
+const isLoading = ref(false);
 
-  if(!loginForm.value.username) {
+// 处理登录
+const handleLogin = async () => {
+  if (!loginForm.value.username) {
     ElMessage.error("用户名不可为空");
     return;
   }
 
-  if(!loginForm.value.password) {
+  if (!loginForm.value.password) {
     ElMessage.error("密码不可为空");
     return;
   }
 
-  login(loginForm.value.username, loginForm.value.password).then((users) => {
-    if (users && users.length != 0) {
-      router.push('/');
+  isLoading.value = true;
+  
+  try {
+    const user = await login(loginForm.value.username, loginForm.value.password);
+    
+    if (user) {
+      ElMessage.success("登录成功！");
+      
+      // 获取回调路径，如果有的话就跳转到原来的页面，否则跳转到首页
+      const redirectPath = (route.query.redirect as string) || '/';
+      
+      // 延迟一点跳转，让用户看到成功提示
+      setTimeout(() => {
+        router.push(redirectPath);
+      }, 500);
     } else {
       ElMessage.error("用户名或密码无效，请重试！");
     }
-  });
-
-}
+  } catch (error) {
+    console.error('登录错误:', error);
+    ElMessage.error("登录失败，请稍后重试！");
+  } finally {
+    isLoading.value = false;
+  }
+};
 
 const goToForgotPassword = () => {
-  router.push('/forgot-password')
-}
+  router.push('/forgot-password');
+};
 </script>
 
 <template>
@@ -89,9 +106,10 @@ const goToForgotPassword = () => {
             type="primary" 
             size="large" 
             class="login-button"
+            :loading="isLoading"
             @click="handleLogin"
           >
-            登录
+            {{ isLoading ? '登录中...' : '登录' }}
           </el-button>
         </el-form-item>
       </el-form>
