@@ -1,7 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-import { User, Lock } from '@element-plus/icons-vue'
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { User, Lock } from '@element-plus/icons-vue';
+import { login } from '../../service/auth';
+import { ElMessage } from 'element-plus';
+
 
 const router = useRouter()
 
@@ -9,11 +12,29 @@ const loginForm = ref({
   username: '',
   password: '',
   rememberMe: false
-})
+});
 
+// 处理登录
 const handleLogin = () => {
-  console.log('Login attempt with:', loginForm.value)
-  // 这里可以添加登录逻辑
+
+  if(!loginForm.value.username) {
+    ElMessage.error("用户名不可为空");
+    return;
+  }
+
+  if(!loginForm.value.password) {
+    ElMessage.error("密码不可为空");
+    return;
+  }
+
+  login(loginForm.value.username, loginForm.value.password).then((users) => {
+    if (users && users.length != 0) {
+      router.push('/');
+    } else {
+      ElMessage.error("用户名或密码无效，请重试！");
+    }
+  });
+
 }
 
 const goToForgotPassword = () => {
