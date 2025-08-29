@@ -11,6 +11,10 @@ import ForgotPasswordView from './views/auth/ForgotPasswordView.vue';
 import UserManagement from './views/management/user/UserManagement.vue';
 import RoleManagement from './views/management/role/RoleManagement.vue';
 import PermissionManagement from './views/management/permission/PermissionManagement.vue';
+// 公司管理页面
+import CompanyManagement from './views/management/company/CompanyManagement.vue';
+// 项目管理页面
+import ProjectManagement from './views/management/project/ProjectManagement.vue';
 import Dashboard from './views/Dashboard.vue';
 import PermissionTest from './views/test/PermissionTest.vue';
 
@@ -40,7 +44,7 @@ const routes = [
             component: UserManagement,
             meta: { 
               title: '用户管理',
-              requiresPermission: 'user:manage'
+              requiresPermission: 'user:view'
             }
           },
           {
@@ -49,7 +53,7 @@ const routes = [
             component: RoleManagement,
             meta: { 
               title: '角色管理',
-              requiresPermission: 'role:manage'
+              requiresPermission: 'role:view'
             }
           },
           {
@@ -58,7 +62,25 @@ const routes = [
             component: PermissionManagement,
             meta: { 
               title: '权限管理',
-              requiresPermission: 'permission:manage'
+              requiresPermission: 'permission:view'
+            }
+          },
+          {
+            path: 'companies',
+            name: 'CompanyManagement',
+            component: CompanyManagement,
+            meta: { 
+              title: '公司管理',
+              requiresPermission: 'company:view'
+            }
+          },
+          {
+            path: 'projects',
+            name: 'ProjectManagement',
+            component: ProjectManagement,
+            meta: { 
+              title: '项目管理',
+              requiresPermission: 'project:view'
             }
           }
         ]

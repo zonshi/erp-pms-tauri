@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import { ArrowDown, User, Setting, SwitchButton, Menu, Fold, Expand, House, UserFilled, Lock, Monitor } from '@element-plus/icons-vue';
+import { ArrowDown, User, Setting, SwitchButton, Menu, Fold, Expand, House, UserFilled, Lock, Monitor, OfficeBuilding, Folder } from '@element-plus/icons-vue';
 import { currentUser } from '../stores/auth';
 import { userLogout } from '../service/auth';
 import { ElMessage, ElMessageBox } from 'element-plus';
@@ -23,6 +23,8 @@ const activeMenu = computed(() => {
   if (path.startsWith('/management/users')) return '/management/users';
   if (path.startsWith('/management/roles')) return '/management/roles';
   if (path.startsWith('/management/permissions')) return '/management/permissions';
+  if (path.startsWith('/management/companies')) return '/management/companies';
+  if (path.startsWith('/management/projects')) return '/management/projects';
   if (path.startsWith('/test/permissions')) return '/test/permissions';
   return path;
 });
@@ -116,24 +118,36 @@ const handleMenuSelect = (index: string) => {
                         <template #title>首页</template>
                     </el-menu-item>
                     
+                    <!-- 公司管理 -->
+                    <el-menu-item index="/management/companies" v-permission="'company:view'">
+                        <el-icon><OfficeBuilding /></el-icon>
+                        <template #title>公司管理</template>
+                    </el-menu-item>
+                    
+                    <!-- 项目管理 -->
+                    <el-menu-item index="/management/projects" v-permission="'project:view'">
+                        <el-icon><Folder /></el-icon>
+                        <template #title>项目管理</template>
+                    </el-menu-item>
+                    
                     <!-- 系统管理 -->
-                    <el-sub-menu index="management" v-permission="{ permissions: ['user:manage', 'role:manage', 'permission:manage'], mode: 'any' }">
+                    <el-sub-menu index="management" v-permission="{ permissions: ['user:view', 'role:view', 'permission:view'], mode: 'any' }">
                         <template #title>
                             <el-icon><Setting /></el-icon>
                             <span>系统管理</span>
                         </template>
                         
-                        <el-menu-item index="/management/users" v-permission="'user:manage'">
+                        <el-menu-item index="/management/users" v-permission="'user:view'">
                             <el-icon><User /></el-icon>
                             <template #title>用户管理</template>
                         </el-menu-item>
                         
-                        <el-menu-item index="/management/roles" v-permission="'role:manage'">
+                        <el-menu-item index="/management/roles" v-permission="'role:view'">
                             <el-icon><UserFilled /></el-icon>
                             <template #title>角色管理</template>
                         </el-menu-item>
                         
-                        <el-menu-item index="/management/permissions" v-permission="'permission:manage'">
+                        <el-menu-item index="/management/permissions" v-permission="'permission:view'">
                             <el-icon><Lock /></el-icon>
                             <template #title>权限管理</template>
                         </el-menu-item>
@@ -262,7 +276,7 @@ const handleMenuSelect = (index: string) => {
 }
 
 :deep(.el-menu-item) {
-  color: #rgba(255, 255, 255, 0.65);
+  color: rgba(255, 255, 255, 0.65);
   height: 48px;
   line-height: 48px;
 }
@@ -278,7 +292,7 @@ const handleMenuSelect = (index: string) => {
 }
 
 :deep(.el-sub-menu__title) {
-  color: #rgba(255, 255, 255, 0.65);
+  color: rgba(255, 255, 255, 0.65);
   height: 48px;
   line-height: 48px;
 }

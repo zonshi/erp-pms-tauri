@@ -88,6 +88,7 @@ CREATE TABLE IF NOT EXISTS companies (
   registered_capital REAL,
   remarks TEXT,
   safety_production_license TEXT,
+  status TEXT NOT NULL DEFAULT 'active',
   tax_registration_no TEXT,
   updated_at TEXT,
   created_by INTEGER NOT NULL,
@@ -391,5 +392,6 @@ CREATE INDEX IF NOT EXISTS idx_projects_project_no ON projects(project_no);
 CREATE INDEX IF NOT EXISTS idx_contracts_contract_no ON contracts(contract_no);
 CREATE INDEX IF NOT EXISTS idx_payment_receipts_receipt_no ON payment_receipts(receipt_no);
 CREATE INDEX IF NOT EXISTS idx_companies_credit_code ON companies(credit_code);
+CREATE INDEX IF NOT EXISTS idx_companies_status ON companies(status);
 CREATE INDEX IF NOT EXISTS idx_bank_accounts_account_no ON bank_accounts(account_no);
 CREATE INDEX IF NOT EXISTS idx_payment_plans_plan_no ON payment_plans(plan_no);

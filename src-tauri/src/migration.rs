@@ -15,5 +15,11 @@ pub fn get_migrations() -> Vec<Migration> {
             sql: include_str!("migrations/2_create_initial_data.sql"),
             kind: MigrationKind::Up,
         },
+        Migration {
+            version: 3,
+            description: "permission_redesign",
+            sql: include_str!("migrations/3_permission_redesign.sql"),
+            kind: MigrationKind::Up,
+        },
     ]
 }

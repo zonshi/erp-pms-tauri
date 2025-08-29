@@ -340,7 +340,7 @@ onMounted(() => {
               编辑
             </el-button>
             
-            <el-dropdown @command="(command) => command === 'resetPassword' ? handleResetPassword(row) : handleStatusChange(row, command)">
+            <el-dropdown @command="(command: string) => command === 'resetPassword' ? handleResetPassword(row) : handleStatusChange(row, command as UserStatus)">
               <el-button size="small">
                 更多操作<el-icon class="el-icon--right"><ArrowDown /></el-icon>
               </el-button>

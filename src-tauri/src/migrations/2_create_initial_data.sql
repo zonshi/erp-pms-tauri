@@ -21,6 +21,27 @@ INSERT OR IGNORE INTO permissions (name, description, created_at) VALUES
 ('permission:delete', '删除权限', datetime('now')),
 ('permission:manage', '权限管理（包含所有权限操作）', datetime('now')),
 
+-- 公司管理权限
+('company:read', '查看公司信息', datetime('now')),
+('company:write', '创建和编辑公司', datetime('now')),
+('company:delete', '删除公司', datetime('now')),
+('company:manage', '公司管理（包含所有公司操作）', datetime('now')),
+
+-- 项目管理权限
+('project:read', '查看项目信息', datetime('now')),
+('project:write', '创建和编辑项目', datetime('now')),
+('project:delete', '删除项目', datetime('now')),
+('project:manage', '项目管理（包含所有项目操作）', datetime('now')),
+
+-- 合同管理权限
+('contract:read', '查看合同信息', datetime('now')),
+('contract:write', '创建和编辑合同', datetime('now')),
+('contract:delete', '删除合同', datetime('now')),
+('contract:approve', '审批合同', datetime('now')),
+('contract:manage', '合同管理（包含所有合同操作）', datetime('now')),
+('contract:document', '管理合同文档', datetime('now')),
+('contract:item', '管理合同条目', datetime('now')),
+
 -- 系统管理权限
 ('system:manage', '系统管理', datetime('now')),
 ('system:config', '系统配置', datetime('now')),
@@ -51,8 +72,8 @@ SELECT r.id, p.id
 FROM roles r, permissions p
 WHERE r.name = '系统管理员'
 AND p.name IN (
-  'user:manage', 'role:manage', 'permission:manage',
-  'dashboard:view', 'profile:view', 'profile:edit'
+  'user:manage', 'role:manage', 'permission:manage', 'company:manage', 'project:manage',
+  'contract:manage', 'dashboard:view', 'profile:view', 'profile:edit'
 );
 
 -- 普通用户 - 基础权限

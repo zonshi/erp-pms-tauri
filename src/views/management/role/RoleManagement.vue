@@ -176,7 +176,7 @@ onMounted(() => {
 
     <!-- 操作按钮 -->
     <el-card class="action-card" shadow="never">
-      <el-button type="primary" :icon="Plus" @click="handleCreate">新增角色</el-button>
+      <el-button type="primary" :icon="Plus" @click="handleCreate" v-permission="'role:create'">新增角色</el-button>
       <el-button :icon="Refresh" @click="loadRoles">刷新</el-button>
     </el-card>
 
@@ -243,6 +243,7 @@ onMounted(() => {
               :icon="Edit"
               size="small"
               @click="handleEdit(row)"
+              v-permission="'role:edit'"
             >
               编辑
             </el-button>
@@ -252,6 +253,7 @@ onMounted(() => {
               :icon="Delete"
               size="small"
               @click="handleDelete(row)"
+              v-permission="'role:delete'"
             >
               删除
             </el-button>
