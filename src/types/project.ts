@@ -126,71 +126,7 @@ export const BudgetCategoryOptions = [
   { value: 'other', label: '其他费用' }
 ];
 
-// 项目里程碑接口
-export interface ProjectMilestone {
-  id?: number;
-  project_id: number;
-  title: string; // 里程碑标题
-  description?: string; // 描述
-  planned_date: string; // 计划日期
-  actual_date?: string; // 实际完成日期
-  status: MilestoneStatus; // 状态
-  priority: MilestonePriority; // 优先级
-  created_at?: string;
-  updated_at?: string;
-  created_by?: number;
-  updated_by?: number;
-}
 
-// 里程碑状态枚举
-export type MilestoneStatus = 'pending' | 'in_progress' | 'completed' | 'delayed';
-
-// 里程碑状态选项
-export const MilestoneStatusOptions = [
-  { value: 'pending', label: '待开始', color: '#909399' },
-  { value: 'in_progress', label: '进行中', color: '#409eff' },
-  { value: 'completed', label: '已完成', color: '#67c23a' },
-  { value: 'delayed', label: '已延期', color: '#f56c6c' }
-];
-
-// 里程碑优先级枚举
-export type MilestonePriority = 'low' | 'medium' | 'high';
-
-// 里程碑优先级选项
-export const MilestonePriorityOptions = [
-  { value: 'low', label: '低', color: '#909399' },
-  { value: 'medium', label: '中', color: '#409eff' },
-  { value: 'high', label: '高', color: '#f56c6c' }
-];
-
-// 项目进度接口
-export interface ProjectProgress {
-  id?: number;
-  project_id: number;
-  phase_name: string; // 阶段名称
-  planned_start_date: string; // 计划开始日期
-  planned_end_date: string; // 计划结束日期
-  actual_start_date?: string; // 实际开始日期
-  actual_end_date?: string; // 实际结束日期
-  completion_percentage?: number; // 完成百分比 (0-100)
-  status: ProgressStatus; // 状态
-  description?: string; // 描述
-  created_at?: string;
-  updated_at?: string;
-  created_by?: number;
-  updated_by?: number;
-}
-
-// 进度状态枚举
-export type ProgressStatus = 'not_started' | 'in_progress' | 'completed' | 'delayed';
-
-// 进度状态选项
-export const ProgressStatusOptions = [
-  { value: 'not_started', label: '未开始', color: '#909399' },
-  { value: 'in_progress', label: '进行中', color: '#409eff' },
-  { value: 'completed', label: '已完成', color: '#67c23a' },
-  { value: 'delayed', label: '已延期', color: '#f56c6c' }
-];
 
 // 合同基础信息接口
 export interface Contract {
@@ -439,18 +375,16 @@ export interface ProjectStatistics {
   actual_cost: number; // 实际成本
   budget_utilization: number; // 预算使用率
   overdue_projects: number; // 逾期项目数
-  milestone_completion_rate: number; // 里程碑完成率
+
 }
 
 // 项目详情标签页类型
-export type ProjectTabType = 'info' | 'contracts' | 'progress' | 'milestones' | 'budget' | 'payments';
+export type ProjectTabType = 'info' | 'contracts' | 'budget' | 'payments';
 
 // 项目详情标签页配置
 export const ProjectTabConfig = [
   { key: 'info', label: '项目信息', icon: 'InfoFilled', permission: 'project:read' },
   { key: 'contracts', label: '合同信息', icon: 'Document', permission: 'project:contract:view' },
-  { key: 'progress', label: '项目进展', icon: 'TrendCharts', permission: 'project:progress:view' },
-  { key: 'milestones', label: '里程碑', icon: 'Flag', permission: 'project:milestone:view' },
   { key: 'budget', label: '预算管理', icon: 'Money', permission: 'project:budget:view' },
   { key: 'payments', label: '收付款', icon: 'CreditCard', permission: 'project:payment:view' }
 ];

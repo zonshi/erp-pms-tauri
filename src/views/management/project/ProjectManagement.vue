@@ -4,7 +4,7 @@
     <div class="header-section">
       <div class="title-section">
         <h2>项目管理</h2>
-        <p class="description">管理公司项目全生命周期，包括项目信息、合同、进展、里程碑等。</p>
+        <p class="description">管理公司项目全生命周期，包括项目信息、合同、预算、收付款等。</p>
       </div>
       
       <div class="action-section">
@@ -165,7 +165,7 @@
               >
                 <template #label>
                   <span class="tab-label">
-                    <el-icon><component :is="tab.icon" /></el-icon>
+                    <el-icon><component :is="getTabIcon(tab.icon)" /></el-icon>
                     {{ tab.label }}
                   </span>
                 </template>
@@ -213,7 +213,9 @@ import {
   Document,
   ArrowDown,
   CopyDocument,
-  Download
+  Download,
+  InfoFilled,
+  CreditCard
 } from '@element-plus/icons-vue';
 
 import { ProjectService } from '../../../service/project';
@@ -228,8 +230,6 @@ import { checkPermission } from '../../../service/auth/permission-checker';
 import ProjectDialog from './components/ProjectDialog.vue';
 import ProjectInfoTab from './components/ProjectInfoTab.vue';
 import ProjectContractsTab from './components/ProjectContractsTab.vue';
-import ProjectProgressTab from './components/ProjectProgressTab.vue';
-import ProjectMilestonesTab from './components/ProjectMilestonesTab.vue';
 import ProjectBudgetTab from './components/ProjectBudgetTab.vue';
 import ProjectPaymentsTab from './components/ProjectPaymentsTab.vue';
 
@@ -321,6 +321,17 @@ const getNodeLabelClass = (type: string) => {
   return type === 'company' ? 'company-label' : 'project-label';
 };
 
+// 图标映射函数
+const getTabIcon = (iconName: string) => {
+  const iconMap: Record<string, any> = {
+    'InfoFilled': InfoFilled,
+    'Document': Document,
+    'Money': Money,
+    'CreditCard': CreditCard
+  };
+  return iconMap[iconName] || Document;
+};
+
 const formatMoney = (amount: number): string => {
   return new Intl.NumberFormat('zh-CN', {
     minimumFractionDigits: 2,
@@ -364,8 +375,6 @@ const getTabComponent = (tabKey: string) => {
   const componentMap = {
     'info': ProjectInfoTab,
     'contracts': ProjectContractsTab,
-    'progress': ProjectProgressTab,
-    'milestones': ProjectMilestonesTab,
     'budget': ProjectBudgetTab,
     'payments': ProjectPaymentsTab
   };
@@ -534,6 +543,9 @@ watch(searchText, () => {
 
 .left-panel {
   width: 300px;
+  min-width: 300px;
+  max-width: 300px;
+  flex-shrink: 0;
   background: white;
   border-right: 1px solid #e4e7ed;
   display: flex;
@@ -734,10 +746,12 @@ watch(searchText, () => {
   flex: 1;
   min-height: 0;
   padding: 0; /* 移除默认内边距，让子组件自己控制 */
+  overflow: hidden; /* 确保内容不会撑开容器 */
 }
 
 :deep(.el-tab-pane) {
   height: 100%;
+  overflow: hidden; /* 确保标签页不会撑开容器 */
 }
 
 /* 自定义滚动条样式 */

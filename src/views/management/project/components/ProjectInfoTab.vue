@@ -162,28 +162,8 @@
             </el-col>
             <el-col :span="8">
               <div class="statistics-item">
-                <div class="statistics-label">里程碑数量</div>
-                <div class="statistics-value">{{ statistics.milestones_count }}个</div>
-              </div>
-            </el-col>
-            <el-col :span="8">
-              <div class="statistics-item">
-                <div class="statistics-label">进度阶段</div>
-                <div class="statistics-value">{{ statistics.progress_phases }}个</div>
-              </div>
-            </el-col>
-          </el-row>
-          <el-row :gutter="16" class="mt-16">
-            <el-col :span="8">
-              <div class="statistics-item">
                 <div class="statistics-label">合同总金额</div>
                 <div class="statistics-value">¥{{ formatMoney(statistics.total_contract_amount) }}</div>
-              </div>
-            </el-col>
-            <el-col :span="8">
-              <div class="statistics-item">
-                <div class="statistics-label">已完成里程碑</div>
-                <div class="statistics-value">{{ statistics.completed_milestones }}个</div>
               </div>
             </el-col>
             <el-col :span="8">
@@ -210,9 +190,6 @@
           />
           <div class="progress-info">
             <span>整体进度：{{ overallProgress }}%</span>
-            <span v-if="currentPhase">
-              当前阶段：{{ currentPhase.phase_name }} ({{ currentPhase.completion_percentage }}%)
-            </span>
           </div>
         </div>
       </div>
@@ -229,9 +206,8 @@ import {
   Calendar,
   CircleCheck
 } from '@element-plus/icons-vue';
-import type { Project, ProjectProgress } from '../../../../types/project';
+import type { Project } from '../../../../types/project';
 import { ProjectStatusOptions } from '../../../../types/project';
-import { ProjectProgressService } from '../../../../service/project';
 
 // Props
 interface Props {
@@ -249,14 +225,10 @@ const emit = defineEmits<{
 // 响应式数据
 const statisticsLoading = ref(false);
 const overallProgress = ref(0);
-const currentPhase = ref<ProjectProgress | null>(null);
 
 const statistics = ref({
   contracts_count: 0,
-  milestones_count: 0,
-  progress_phases: 0,
   total_contract_amount: 0,
-  completed_milestones: 0,
   budget_execution_rate: 0
 });
 
@@ -334,10 +306,7 @@ const loadProjectStatistics = async () => {
     // 模拟数据
     statistics.value = {
       contracts_count: 3,
-      milestones_count: 8,
-      progress_phases: 5,
       total_contract_amount: 1500000,
-      completed_milestones: 5,
       budget_execution_rate: 65
     };
   } catch (error) {
@@ -347,22 +316,9 @@ const loadProjectStatistics = async () => {
   }
 };
 
-const loadProjectProgress = async () => {
-  try {
-    const progressData = await ProjectProgressService.getOverallProgress(props.projectId);
-    overallProgress.value = Math.round(progressData.overall_completion);
-    currentPhase.value = progressData.current_phase || null;
-  } catch (error) {
-    console.error('加载项目进度失败:', error);
-  }
-};
-
 // 生命周期
 onMounted(async () => {
-  await Promise.all([
-    loadProjectStatistics(),
-    loadProjectProgress()
-  ]);
+  await loadProjectStatistics();
 });
 </script>
 
