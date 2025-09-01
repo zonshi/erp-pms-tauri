@@ -216,6 +216,8 @@ onMounted(() => {
 <style scoped>
 .project-progress-tab {
   height: 100%;
+  overflow-y: auto;
+  padding: 20px;
   display: flex;
   flex-direction: column;
 }
@@ -224,8 +226,8 @@ onMounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  padding: 20px 20px 0 20px;
   margin-bottom: 20px;
+  flex-shrink: 0;
 }
 
 .header-left h3 {
@@ -242,8 +244,10 @@ onMounted(() => {
 
 .progress-content {
   flex: 1;
-  padding: 0 20px 20px 20px;
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-height: 0;
 }
 
 .progress-overview {
@@ -324,5 +328,24 @@ onMounted(() => {
 .empty-state p {
   margin: 0 0 20px 0;
   font-size: 16px;
+}
+
+/* 自定义滚动条样式 */
+.project-progress-tab::-webkit-scrollbar {
+  width: 6px;
+}
+
+.project-progress-tab::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.project-progress-tab::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.project-progress-tab::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
 }
 </style>

@@ -295,7 +295,10 @@ onMounted(() => {
 <style scoped>
 .project-payments-tab {
   height: 100%;
+  overflow-y: auto;
   padding: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
 .tab-header {
@@ -303,6 +306,7 @@ onMounted(() => {
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 20px;
+  flex-shrink: 0;
 }
 
 .header-left h3 {
@@ -390,5 +394,24 @@ onMounted(() => {
 .empty-state p {
   margin: 0 0 20px 0;
   font-size: 16px;
+}
+
+/* 自定义滚动条样式 */
+.project-payments-tab::-webkit-scrollbar {
+  width: 6px;
+}
+
+.project-payments-tab::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.project-payments-tab::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.project-payments-tab::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
 }
 </style>

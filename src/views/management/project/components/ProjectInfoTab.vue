@@ -368,13 +368,16 @@ onMounted(async () => {
 
 <style scoped>
 .project-info-tab {
-  padding: 20px;
   height: 100%;
   overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
 .overview-cards {
   margin-bottom: 24px;
+  flex-shrink: 0;
 }
 
 .stat-card {
@@ -431,9 +434,11 @@ onMounted(async () => {
 }
 
 .info-sections {
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 24px;
+  min-height: 0;
 }
 
 .info-section {

@@ -233,37 +233,103 @@ onMounted(() => {
 <style scoped>
 .project-budget-tab {
   height: 100%;
+  overflow-y: auto;
   padding: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
-.tab-content {
-  text-align: center;
-  padding: 60px 20px;
+.tab-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  flex-shrink: 0;
 }
 
-.tab-content h3 {
-  margin: 0 0 8px 0;
+.header-left h3 {
+  margin: 0 0 4px 0;
   font-size: 18px;
   color: #303133;
 }
 
-.tab-content p {
-  margin: 0 0 40px 0;
+.header-left p {
+  margin: 0;
   color: #606266;
+  font-size: 14px;
 }
 
-.placeholder {
+.budget-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-height: 0;
+}
+
+.budget-overview {
+  flex-shrink: 0;
+}
+
+.overview-item {
+  text-align: center;
+  padding: 16px;
+}
+
+.overview-value {
+  font-size: 24px;
+  font-weight: 600;
+  color: #303133;
+  margin-bottom: 8px;
+}
+
+.overview-label {
+  font-size: 14px;
   color: #909399;
 }
 
-.placeholder-icon {
-  font-size: 64px;
-  color: #c0c4cc;
-  margin-bottom: 16px;
+.budget-table {
+  flex: 1;
+  min-height: 400px;
 }
 
-.placeholder p {
+.empty-state {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  color: #909399;
+}
+
+.empty-icon {
+  font-size: 64px;
+  margin-bottom: 16px;
+  color: #c0c4cc;
+}
+
+.empty-state p {
   margin: 0 0 20px 0;
   font-size: 16px;
+}
+
+/* 自定义滚动条 */
+.project-budget-tab::-webkit-scrollbar {
+  width: 6px;
+}
+
+.project-budget-tab::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.project-budget-tab::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.project-budget-tab::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
 }
 </style>

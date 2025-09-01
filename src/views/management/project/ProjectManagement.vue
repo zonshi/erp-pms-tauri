@@ -125,13 +125,23 @@
                 </el-button>
                 <template #dropdown>
                   <el-dropdown-menu>
-                    <el-dropdown-item command="duplicate" v-permission="'project:create'">
+                    <el-dropdown-item 
+                      v-if="dropdownPermissions.canCreateProject"
+                      command="duplicate"
+                    >
                       <el-icon><CopyDocument /></el-icon>复制项目
                     </el-dropdown-item>
-                    <el-dropdown-item command="export" v-permission="'project:read'">
+                    <el-dropdown-item 
+                      v-if="dropdownPermissions.canReadProject"
+                      command="export"
+                    >
                       <el-icon><Download /></el-icon>导出数据
                     </el-dropdown-item>
-                    <el-dropdown-item command="delete" divided v-permission="'project:delete'">
+                    <el-dropdown-item 
+                      v-if="dropdownPermissions.canDeleteProject"
+                      command="delete" 
+                      divided
+                    >
                       <el-icon><Delete /></el-icon>删除项目
                     </el-dropdown-item>
                   </el-dropdown-menu>
@@ -164,7 +174,7 @@
                 <component 
                   :is="getTabComponent(tab.key)" 
                   :project="selectedProject"
-                  :project-id="selectedProject.id"
+                  :project-id="selectedProject.id!"
                   @project-updated="handleProjectUpdated"
                   @edit-project="handleEditProject"
                 />
@@ -187,7 +197,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted, computed, watch } from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { 
   Plus, 
@@ -203,11 +213,7 @@ import {
   Document,
   ArrowDown,
   CopyDocument,
-  Download,
-  InfoFilled,
-  TrendCharts,
-  Flag,
-  CreditCard
+  Download
 } from '@element-plus/icons-vue';
 
 import { ProjectService } from '../../../service/project';
@@ -266,6 +272,22 @@ const filterTabsByPermission = async () => {
   if (filteredTabs.length > 0 && !filteredTabs.find(tab => tab.key === activeTab.value)) {
     activeTab.value = filteredTabs[0].key as ProjectTabType;
   }
+};
+
+// 权限检查相关的响应式数据
+const dropdownPermissions = ref({
+  canCreateProject: false,
+  canReadProject: false,
+  canDeleteProject: false
+});
+
+// 检查下拉菜单权限
+const checkDropdownPermissions = async () => {
+  dropdownPermissions.value = {
+    canCreateProject: await checkPermission('project:create'),
+    canReadProject: await checkPermission('project:read'),
+    canDeleteProject: await checkPermission('project:delete')
+  };
 };
 
 // 计算属性
@@ -455,7 +477,8 @@ const handleProjectUpdated = async () => {
 onMounted(async () => {
   await Promise.all([
     loadCompanyProjectTree(),
-    filterTabsByPermission()
+    filterTabsByPermission(),
+    checkDropdownPermissions()
   ]);
 });
 
@@ -505,7 +528,8 @@ watch(searchText, () => {
 .main-content {
   flex: 1;
   display: flex;
-  overflow: hidden;
+  /* 移除 overflow: hidden，允许右侧面板内的标签页滚动 */
+  /* 左侧面板有独立的滚动设置，不受影响 */
 }
 
 .left-panel {
@@ -583,7 +607,7 @@ watch(searchText, () => {
   flex: 1;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  /* 移除 overflow: hidden，允许内部组件控制滚动 */
 }
 
 .welcome-panel {
@@ -682,8 +706,10 @@ watch(searchText, () => {
 
 .project-tabs {
   flex: 1;
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
   margin: 0 24px 24px 24px;
+  min-height: 0;
 }
 
 .tab-label {
@@ -696,16 +722,22 @@ watch(searchText, () => {
   height: 100%;
   display: flex;
   flex-direction: column;
+  border: 1px solid #dcdfe6;
+}
+
+:deep(.el-tabs__header) {
+  flex-shrink: 0;
+  margin: 0; /* 移除默认边距 */
 }
 
 :deep(.el-tabs__content) {
   flex: 1;
-  overflow: hidden;
+  min-height: 0;
+  padding: 0; /* 移除默认内边距，让子组件自己控制 */
 }
 
 :deep(.el-tab-pane) {
   height: 100%;
-  overflow-y: auto;
 }
 
 /* 自定义滚动条样式 */
