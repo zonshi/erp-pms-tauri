@@ -720,7 +720,7 @@ watch(searchText, () => {
   flex: 1;
   display: flex;
   flex-direction: column;
-  margin: 0 24px 24px 24px;
+  margin: 24px;
   min-height: 0;
 }
 
