@@ -174,11 +174,7 @@
                 <component 
                   :is="getTabComponent(tab.key)" 
                   :project="selectedProject"
-<<<<<<< HEAD
                   :project-id="selectedProject?.id || 0"
-=======
-                  :project-id="selectedProject.id!"
->>>>>>> 3a9ea62aa898ae6cdbb16a0ed992087b2069d8ef
                   @project-updated="handleProjectUpdated"
                   @edit-project="handleEditProject"
                 />
@@ -217,13 +213,7 @@ import {
   Document,
   ArrowDown,
   CopyDocument,
-<<<<<<< HEAD
   Download
-=======
-  Download,
-  InfoFilled,
-  CreditCard
->>>>>>> 3a9ea62aa898ae6cdbb16a0ed992087b2069d8ef
 } from '@element-plus/icons-vue';
 
 import { ProjectService } from '../../../service/project';
@@ -332,10 +322,8 @@ const getNodeLabelClass = (type: string) => {
 // 图标映射函数
 const getTabIcon = (iconName: string) => {
   const iconMap: Record<string, any> = {
-    'InfoFilled': InfoFilled,
     'Document': Document,
-    'Money': Money,
-    'CreditCard': CreditCard
+    'Money': Money
   };
   return iconMap[iconName] || Document;
 };
