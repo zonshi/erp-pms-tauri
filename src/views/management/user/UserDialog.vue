@@ -2,7 +2,8 @@
 import { ref, reactive, watch, computed } from 'vue';
 import { ElMessage } from 'element-plus';
 import { UserService } from '../../../service/auth';
-import type { UserInfo, Role, CreateUserRequest, UpdateUserRequest, UserStatus } from '../../../types/auth';
+import { UserStatus } from '../../../types/auth';
+import type { UserInfo, Role, CreateUserRequest, UpdateUserRequest } from '../../../types/auth';
 
 // Props
 interface Props {
@@ -60,7 +61,7 @@ const formRules = {
   confirmPassword: [
     { required: true, message: '请确认密码', trigger: 'blur' },
     {
-      validator: (rule: any, value: string, callback: Function) => {
+      validator: (_rule: any, value: string, callback: Function) => {
         if (value !== formData.password) {
           callback(new Error('两次输入密码不一致'));
         } else {
@@ -97,7 +98,7 @@ const editModeRules = computed(() => {
     ];
     rules.confirmPassword = [
       {
-        validator: (rule: any, value: string, callback: Function) => {
+        validator: (_rule: any, value: string, callback: Function) => {
           if (formData.password && value !== formData.password) {
             callback(new Error('两次输入密码不一致'));
           } else {
@@ -119,7 +120,7 @@ const resetForm = () => {
   formData.password = '';
   formData.confirmPassword = '';
   formData.full_name = '';
-  formData.status = 'active';
+  formData.status = UserStatus.ACTIVE;
   formData.role_ids = [];
   
   if (formRef.value) {

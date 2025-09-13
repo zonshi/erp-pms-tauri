@@ -167,7 +167,7 @@ const rules: FormRules = {
   ],
   actual_date: [
     { 
-      validator: (rule: any, value: any, callback: any) => {
+      validator: (_rule: any, value: any, callback: any) => {
         if (formData.value.status === 'completed' && !value) {
           callback(new Error('已完成状态必须填写实际完成日期'));
         } else {

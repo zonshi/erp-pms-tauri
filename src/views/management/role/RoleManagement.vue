@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref, reactive, onMounted, computed } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { Plus, Edit, Delete, Refresh, Search, Setting } from '@element-plus/icons-vue';
+import { Plus, Edit, Delete, Refresh, Search } from '@element-plus/icons-vue';
 import { RoleService, PermissionService } from '../../../service/auth';
 import type { Role, Permission, PaginationRequest } from '../../../types/auth';
 import RoleDialog from './RoleDialog.vue';
@@ -133,11 +133,6 @@ const handleDialogSubmit = () => {
 const formatDate = (dateStr: string) => {
   if (!dateStr) return '';
   return new Date(dateStr).toLocaleString('zh-CN');
-};
-
-const formatPermissions = (permissions: Permission[] | undefined) => {
-  if (!permissions || permissions.length === 0) return '无权限';
-  return permissions.map(permission => permission.name).join(', ');
 };
 
 // 生命周期

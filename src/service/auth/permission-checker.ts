@@ -1,6 +1,6 @@
 import { getCurrentUserInfo, hasPermission, hasRole } from '../auth';
 import type { UserInfo } from '../../types/auth';
-import { hasPermissionInclude, getPermissionConfig } from '../../config/permissions';
+import { hasPermissionInclude } from '../../config/permissions';
 
 /**
  * 权限检查服务

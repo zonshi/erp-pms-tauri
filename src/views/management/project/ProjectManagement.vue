@@ -164,7 +164,7 @@
                 <component 
                   :is="getTabComponent(tab.key)" 
                   :project="selectedProject"
-                  :project-id="selectedProject.id"
+                  :project-id="selectedProject?.id || 0"
                   @project-updated="handleProjectUpdated"
                   @edit-project="handleEditProject"
                 />
@@ -187,7 +187,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted, computed, watch } from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import { 
   Plus, 
@@ -203,11 +203,7 @@ import {
   Document,
   ArrowDown,
   CopyDocument,
-  Download,
-  InfoFilled,
-  TrendCharts,
-  Flag,
-  CreditCard
+  Download
 } from '@element-plus/icons-vue';
 
 import { ProjectService } from '../../../service/project';

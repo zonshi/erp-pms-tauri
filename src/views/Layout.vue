@@ -1,15 +1,13 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import { ArrowDown, User, Setting, SwitchButton, Menu, Fold, Expand, House, UserFilled, Lock, Monitor, OfficeBuilding, Folder } from '@element-plus/icons-vue';
+import { ArrowDown, User, Setting, SwitchButton, Fold, Expand, House, UserFilled, Lock, Monitor, OfficeBuilding, Folder } from '@element-plus/icons-vue';
 import { currentUser } from '../stores/auth';
 import { userLogout } from '../service/auth';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { usePermissions } from '../composables/usePermissions';
 
 const router = useRouter();
 const route = useRoute();
-const { hasPermission } = usePermissions();
 
 // 侧边栏折叠状态
 const isCollapse = ref(false);

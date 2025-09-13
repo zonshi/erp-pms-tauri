@@ -58,7 +58,7 @@ export const getCurrentUserInfo = async (): Promise<UserInfo | null> => {
       return null;
     }
     
-    // 导入 UserService 获取完整用户信息
+    // 使用静态导入 UserService
     const { UserService } = await import('./user');
     const result = await UserService.getUserById(currentUser.id);
     

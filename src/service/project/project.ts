@@ -10,7 +10,8 @@ import {
   ProjectQueryParams,
   ProjectListResponse,
   CompanyProjectTreeNode,
-  ProjectStatistics
+  ProjectStatistics,
+  ProjectStatusOptions
 } from '../../types/project';
 
 export class ProjectService {
@@ -372,9 +373,6 @@ export class ProjectService {
         project_status?: string;
       }[];
 
-      // 导入项目状态选项以获取中文描述
-      const { ProjectStatusOptions } = await import('../../types/project');
-      
       // 获取状态中文描述的辅助函数
       const getStatusText = (status: string) => {
         const option = ProjectStatusOptions.find(opt => opt.value === status);

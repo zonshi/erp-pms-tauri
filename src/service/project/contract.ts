@@ -10,7 +10,6 @@ import {
   ContractQueryParams,
   ContractListResponse,
   PaymentReceipt,
-  PaymentStatus,
   ContractItem,
   ContractDocument,
   ContractApproval

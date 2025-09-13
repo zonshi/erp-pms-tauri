@@ -270,7 +270,7 @@ const formRules = {
     { required: true, message: '请输入项目编号', trigger: 'blur' },
     { min: 2, max: 50, message: '项目编号长度在 2 到 50 个字符', trigger: 'blur' },
     {
-      validator: async (rule: any, value: string, callback: Function) => {
+      validator: async (_rule: any, value: string, callback: Function) => {
         if (!value) {
           callback();
           return;
@@ -301,7 +301,7 @@ const formRules = {
   planned_end_date: [
     { required: true, message: '请选择项目结束日期', trigger: 'change' },
     {
-      validator: (rule: any, value: string, callback: Function) => {
+      validator: (_rule: any, value: string, callback: Function) => {
         if (value && formData.start_date && value <= formData.start_date) {
           callback(new Error('结束日期必须晚于开始日期'));
         } else {

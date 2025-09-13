@@ -6,8 +6,7 @@ import Database from '@tauri-apps/plugin-sql';
 import { 
   ContractApproval, 
   CreateContractApprovalRequest, 
-  UpdateContractApprovalRequest,
-  ApprovalStatus 
+  UpdateContractApprovalRequest
 } from '../../types/project';
 
 export class ContractApprovalService {

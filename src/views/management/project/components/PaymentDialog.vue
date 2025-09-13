@@ -215,7 +215,7 @@ const rules: FormRules = {
   amount: [
     { required: true, message: '请输入金额', trigger: 'blur' },
     { 
-      validator: (rule: any, value: any, callback: any) => {
+      validator: (_rule: any, value: any, callback: any) => {
         if (value <= 0) {
           callback(new Error('金额必须大于0'));
         } else {
@@ -244,7 +244,7 @@ const rules: FormRules = {
   ],
   exchange_rate: [
     { 
-      validator: (rule: any, value: any, callback: any) => {
+      validator: (_rule: any, value: any, callback: any) => {
         if (formData.value.currency !== 'CNY' && (!value || value <= 0)) {
           callback(new Error('非人民币交易必须填写汇率'));
         } else {

@@ -223,7 +223,6 @@ import { ElMessage, ElMessageBox } from 'element-plus';
 import { 
   Plus, 
   Edit, 
-  Delete, 
   Refresh, 
   Search, 
   ArrowDown 

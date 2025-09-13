@@ -124,11 +124,11 @@ const handleCreateContract = () => {
   ElMessage.info('合同创建功能待开发');
 };
 
-const handleViewContract = (contract: Contract) => {
+const handleViewContract = (_contract: Contract) => {
   ElMessage.info('合同查看功能待开发');
 };
 
-const handleEditContract = (contract: Contract) => {
+const handleEditContract = (_contract: Contract) => {
   ElMessage.info('合同编辑功能待开发');
 };
 

@@ -28,18 +28,6 @@ const searchForm = reactive({
   status: ''
 });
 
-// 表格列配置
-const tableColumns = [
-  { prop: 'id', label: 'ID', width: 80 },
-  { prop: 'username', label: '用户名', minWidth: 120 },
-  { prop: 'email', label: '邮箱', minWidth: 180 },
-  { prop: 'full_name', label: '姓名', minWidth: 120 },
-  { prop: 'status', label: '状态', width: 100 },
-  { prop: 'roles', label: '角色', minWidth: 150 },
-  { prop: 'created_at', label: '创建时间', width: 160 },
-  { prop: 'actions', label: '操作', width: 280, fixed: 'right' }
-];
-
 // 用户状态选项
 const statusOptions = [
   { label: '全部', value: '' },
@@ -218,11 +206,6 @@ const handleDialogSubmit = () => {
 const formatDate = (dateStr: string) => {
   if (!dateStr) return '';
   return new Date(dateStr).toLocaleString('zh-CN');
-};
-
-const formatRoles = (roles: Role[] | undefined) => {
-  if (!roles || roles.length === 0) return '无角色';
-  return roles.map(role => role.name).join(', ');
 };
 
 // 生命周期

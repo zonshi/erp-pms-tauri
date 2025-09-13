@@ -140,7 +140,7 @@ const rules: FormRules = {
   planned_amount: [
     { required: true, message: '请输入计划金额', trigger: 'blur' },
     { 
-      validator: (rule: any, value: any, callback: any) => {
+      validator: (_rule: any, value: any, callback: any) => {
         if (value <= 0) {
           callback(new Error('计划金额必须大于0'));
         } else {
@@ -152,7 +152,7 @@ const rules: FormRules = {
   ],
   actual_amount: [
     { 
-      validator: (rule: any, value: any, callback: any) => {
+      validator: (_rule: any, value: any, callback: any) => {
         if (value !== undefined && value !== null && value !== '' && value < 0) {
           callback(new Error('实际金额不能为负数'));
         } else {

@@ -203,7 +203,7 @@ const handleCreatePhase = () => {
   ElMessage.info('阶段创建功能待开发');
 };
 
-const handleEditPhase = (phase: ProjectProgress) => {
+const handleEditPhase = (_phase: ProjectProgress) => {
   ElMessage.info('阶段编辑功能待开发');
 };
 
