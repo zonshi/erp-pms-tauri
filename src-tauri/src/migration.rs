@@ -21,5 +21,11 @@ pub fn get_migrations() -> Vec<Migration> {
             sql: include_str!("migrations/3_permission_redesign.sql"),
             kind: MigrationKind::Up,
         },
+        Migration {
+            version: 4,
+            description: "remove_progress_milestone_tables",
+            sql: include_str!("migrations/4_remove_progress_milestone_tables.sql"),
+            kind: MigrationKind::Up,
+        },
     ]
 }

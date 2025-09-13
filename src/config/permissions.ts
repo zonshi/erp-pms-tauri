@@ -282,9 +282,7 @@ export const PERMISSION_CONFIG: PermissionConfig[] = [
     includes: [
       'project:view', 'project:create', 'project:edit', 'project:delete',
       'project:budget:view', 'project:budget:create', 'project:budget:edit', 'project:budget:delete',
-      'project:milestone:view', 'project:milestone:create', 'project:milestone:edit', 'project:milestone:delete',
       'project:payment:view', 'project:payment:create', 'project:payment:edit', 'project:payment:delete',
-      'project:progress:view', 'project:progress:create', 'project:progress:edit', 'project:progress:delete',
       'project:contract:view', 'project:contract:create', 'project:contract:edit', 'project:contract:delete'
     ]
   },
@@ -374,49 +372,6 @@ export const PERMISSION_CONFIG: PermissionConfig[] = [
     parent: 'project:budget:view'
   },
 
-  // 项目里程碑管理
-  {
-    key: 'project:milestone:view',
-    name: '查看项目里程碑',
-    description: '查看项目里程碑信息',
-    category: '业务管理',
-    level: 'page',
-    parent: 'project:view',
-    includes: ['project:milestone:read']
-  },
-  {
-    key: 'project:milestone:read',
-    name: '读取里程碑数据',
-    description: '查看里程碑详细数据',
-    category: '业务管理',
-    level: 'data',
-    parent: 'project:milestone:view'
-  },
-  {
-    key: 'project:milestone:create',
-    name: '新增里程碑',
-    description: '创建新的里程碑',
-    category: '业务管理',
-    level: 'button',
-    parent: 'project:milestone:view'
-  },
-  {
-    key: 'project:milestone:edit',
-    name: '编辑里程碑',
-    description: '修改里程碑信息',
-    category: '业务管理',
-    level: 'button',
-    parent: 'project:milestone:view'
-  },
-  {
-    key: 'project:milestone:delete',
-    name: '删除里程碑',
-    description: '删除里程碑',
-    category: '业务管理',
-    level: 'button',
-    parent: 'project:milestone:view'
-  },
-
   // 项目收付款管理
   {
     key: 'project:payment:view',
@@ -458,49 +413,6 @@ export const PERMISSION_CONFIG: PermissionConfig[] = [
     category: '业务管理',
     level: 'button',
     parent: 'project:payment:view'
-  },
-
-  // 项目进展管理
-  {
-    key: 'project:progress:view',
-    name: '查看项目进展',
-    description: '查看项目进展信息',
-    category: '业务管理',
-    level: 'page',
-    parent: 'project:view',
-    includes: ['project:progress:read']
-  },
-  {
-    key: 'project:progress:read',
-    name: '读取进展数据',
-    description: '查看进展详细数据',
-    category: '业务管理',
-    level: 'data',
-    parent: 'project:progress:view'
-  },
-  {
-    key: 'project:progress:create',
-    name: '新增进展阶段',
-    description: '创建新的进展阶段',
-    category: '业务管理',
-    level: 'button',
-    parent: 'project:progress:view'
-  },
-  {
-    key: 'project:progress:edit',
-    name: '编辑进展阶段',
-    description: '修改进展阶段信息',
-    category: '业务管理',
-    level: 'button',
-    parent: 'project:progress:view'
-  },
-  {
-    key: 'project:progress:delete',
-    name: '删除进展阶段',
-    description: '删除进展阶段',
-    category: '业务管理',
-    level: 'button',
-    parent: 'project:progress:view'
   },
 
   // 项目合同管理
@@ -577,8 +489,7 @@ export const PERMISSION_CONFIG: PermissionConfig[] = [
       'dashboard:view',
       'user:view', 'role:view', 'permission:view',
       'company:view', 'project:view',
-      'project:budget:view', 'project:milestone:view', 
-      'project:payment:view', 'project:progress:view', 'project:contract:view'
+      'project:budget:view', 'project:payment:view', 'project:contract:view'
     ]
   }
 ];

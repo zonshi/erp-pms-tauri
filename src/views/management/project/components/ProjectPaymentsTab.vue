@@ -105,18 +105,36 @@
               </template>
             </el-table-column>
             <el-table-column prop="description" label="备注" min-width="150" show-overflow-tooltip />
-            <el-table-column label="操作" width="200" align="center">
+            <el-table-column label="操作" width="120" align="center">
               <template #default="{ row }">
-                <el-button size="small" @click="handleEditPayment(row)">编辑</el-button>
-                <el-button 
-                  size="small" 
-                  :type="row.status === 'paid' ? 'info' : 'success'"
-                  :disabled="row.status === 'paid'"
-                  @click="handlePaymentPaid(row)"
-                >
-                  {{ row.status === 'paid' ? '已支付' : '标记已付' }}
-                </el-button>
-                <el-button size="small" type="danger" @click="handleDeletePayment(row)">删除</el-button>
+                <el-dropdown @command="(command: string) => handlePaymentAction(command, row)">
+                  <el-button size="small" type="primary">
+                    编辑<el-icon class="el-icon--right"><arrow-down /></el-icon>
+                  </el-button>
+                  <template #dropdown>
+                    <el-dropdown-menu>
+                      <el-dropdown-item command="edit">
+                        <el-icon><Edit /></el-icon>编辑
+                      </el-dropdown-item>
+                      <el-dropdown-item 
+                        v-if="row.status !== 'paid'"
+                        command="markPaid"
+                      >
+                        <el-icon><Check /></el-icon>标记已支付
+                      </el-dropdown-item>
+                      <el-dropdown-item 
+                        v-if="row.status === 'paid'"
+                        command="markPaid"
+                        disabled
+                      >
+                        <el-icon><Check /></el-icon>已支付
+                      </el-dropdown-item>
+                      <el-dropdown-item command="delete" divided>
+                        <el-icon><Delete /></el-icon>删除
+                      </el-dropdown-item>
+                    </el-dropdown-menu>
+                  </template>
+                </el-dropdown>
               </template>
             </el-table-column>
           </el-table>
@@ -145,7 +163,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
-import { Plus, CreditCard } from '@element-plus/icons-vue';
+import { Plus, CreditCard, ArrowDown, Edit, Check, Delete } from '@element-plus/icons-vue';
 import type { Project, PaymentReceipt } from '../../../../types/project';
 import { PaymentReceiptService } from '../../../../service/project';
 import PaymentDialog from './PaymentDialog.vue';
@@ -241,6 +259,22 @@ const handleCreatePayment = () => {
   dialogVisible.value = true;
 };
 
+const handlePaymentAction = async (command: string, payment: PaymentReceipt) => {
+  switch (command) {
+    case 'edit':
+      handleEditPayment(payment);
+      break;
+    case 'markPaid':
+      if (payment.status !== 'paid') {
+        await handlePaymentPaid(payment);
+      }
+      break;
+    case 'delete':
+      await handleDeletePayment(payment);
+      break;
+  }
+};
+
 const handleEditPayment = (payment: PaymentReceipt) => {
   dialogMode.value = 'edit';
   currentPayment.value = payment;
@@ -295,7 +329,10 @@ onMounted(() => {
 <style scoped>
 .project-payments-tab {
   height: 100%;
+  overflow: hidden;
   padding: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
 .tab-header {
@@ -303,6 +340,7 @@ onMounted(() => {
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 20px;
+  flex-shrink: 0;
 }
 
 .header-left h3 {
@@ -318,8 +356,15 @@ onMounted(() => {
   font-size: 14px;
 }
 
+.payments-content {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+}
+
 .payments-overview {
   margin-bottom: 20px;
+  flex-shrink: 0;
 }
 
 .overview-item {
@@ -352,6 +397,7 @@ onMounted(() => {
 
 .payments-table {
   margin-bottom: 20px;
+  flex-shrink: 0;
 }
 
 .table-header {
@@ -363,6 +409,15 @@ onMounted(() => {
 .table-filters {
   display: flex;
   align-items: center;
+}
+
+/* 表格水平滚动控制 */
+:deep(.el-table) {
+  overflow-x: auto;
+}
+
+:deep(.el-table__body-wrapper) {
+  overflow-x: auto;
 }
 
 .amount-positive {
@@ -390,5 +445,29 @@ onMounted(() => {
 .empty-state p {
   margin: 0 0 20px 0;
   font-size: 16px;
+}
+
+/* 自定义滚动条样式 */
+.payments-content::-webkit-scrollbar,
+:deep(.el-table__body-wrapper)::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.payments-content::-webkit-scrollbar-track,
+:deep(.el-table__body-wrapper)::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.payments-content::-webkit-scrollbar-thumb,
+:deep(.el-table__body-wrapper)::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.payments-content::-webkit-scrollbar-thumb:hover,
+:deep(.el-table__body-wrapper)::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
 }
 </style>

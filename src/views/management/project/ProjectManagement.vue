@@ -4,7 +4,7 @@
     <div class="header-section">
       <div class="title-section">
         <h2>项目管理</h2>
-        <p class="description">管理公司项目全生命周期，包括项目信息、合同、进展、里程碑等。</p>
+        <p class="description">管理公司项目全生命周期，包括项目信息、合同、预算、收付款等。</p>
       </div>
       
       <div class="action-section">
@@ -125,13 +125,23 @@
                 </el-button>
                 <template #dropdown>
                   <el-dropdown-menu>
-                    <el-dropdown-item command="duplicate" v-permission="'project:create'">
+                    <el-dropdown-item 
+                      v-if="dropdownPermissions.canCreateProject"
+                      command="duplicate"
+                    >
                       <el-icon><CopyDocument /></el-icon>复制项目
                     </el-dropdown-item>
-                    <el-dropdown-item command="export" v-permission="'project:read'">
+                    <el-dropdown-item 
+                      v-if="dropdownPermissions.canReadProject"
+                      command="export"
+                    >
                       <el-icon><Download /></el-icon>导出数据
                     </el-dropdown-item>
-                    <el-dropdown-item command="delete" divided v-permission="'project:delete'">
+                    <el-dropdown-item 
+                      v-if="dropdownPermissions.canDeleteProject"
+                      command="delete" 
+                      divided
+                    >
                       <el-icon><Delete /></el-icon>删除项目
                     </el-dropdown-item>
                   </el-dropdown-menu>
@@ -155,7 +165,7 @@
               >
                 <template #label>
                   <span class="tab-label">
-                    <el-icon><component :is="tab.icon" /></el-icon>
+                    <el-icon><component :is="getTabIcon(tab.icon)" /></el-icon>
                     {{ tab.label }}
                   </span>
                 </template>
@@ -164,7 +174,11 @@
                 <component 
                   :is="getTabComponent(tab.key)" 
                   :project="selectedProject"
+<<<<<<< HEAD
                   :project-id="selectedProject?.id || 0"
+=======
+                  :project-id="selectedProject.id!"
+>>>>>>> 3a9ea62aa898ae6cdbb16a0ed992087b2069d8ef
                   @project-updated="handleProjectUpdated"
                   @edit-project="handleEditProject"
                 />
@@ -203,7 +217,13 @@ import {
   Document,
   ArrowDown,
   CopyDocument,
+<<<<<<< HEAD
   Download
+=======
+  Download,
+  InfoFilled,
+  CreditCard
+>>>>>>> 3a9ea62aa898ae6cdbb16a0ed992087b2069d8ef
 } from '@element-plus/icons-vue';
 
 import { ProjectService } from '../../../service/project';
@@ -218,8 +238,6 @@ import { checkPermission } from '../../../service/auth/permission-checker';
 import ProjectDialog from './components/ProjectDialog.vue';
 import ProjectInfoTab from './components/ProjectInfoTab.vue';
 import ProjectContractsTab from './components/ProjectContractsTab.vue';
-import ProjectProgressTab from './components/ProjectProgressTab.vue';
-import ProjectMilestonesTab from './components/ProjectMilestonesTab.vue';
 import ProjectBudgetTab from './components/ProjectBudgetTab.vue';
 import ProjectPaymentsTab from './components/ProjectPaymentsTab.vue';
 
@@ -264,6 +282,22 @@ const filterTabsByPermission = async () => {
   }
 };
 
+// 权限检查相关的响应式数据
+const dropdownPermissions = ref({
+  canCreateProject: false,
+  canReadProject: false,
+  canDeleteProject: false
+});
+
+// 检查下拉菜单权限
+const checkDropdownPermissions = async () => {
+  dropdownPermissions.value = {
+    canCreateProject: await checkPermission('project:create'),
+    canReadProject: await checkPermission('project:read'),
+    canDeleteProject: await checkPermission('project:delete')
+  };
+};
+
 // 计算属性
 const getProjectStatusType = computed(() => {
   return (status: string) => {
@@ -293,6 +327,17 @@ const getNodeIconClass = (type: string) => {
 
 const getNodeLabelClass = (type: string) => {
   return type === 'company' ? 'company-label' : 'project-label';
+};
+
+// 图标映射函数
+const getTabIcon = (iconName: string) => {
+  const iconMap: Record<string, any> = {
+    'InfoFilled': InfoFilled,
+    'Document': Document,
+    'Money': Money,
+    'CreditCard': CreditCard
+  };
+  return iconMap[iconName] || Document;
 };
 
 const formatMoney = (amount: number): string => {
@@ -338,8 +383,6 @@ const getTabComponent = (tabKey: string) => {
   const componentMap = {
     'info': ProjectInfoTab,
     'contracts': ProjectContractsTab,
-    'progress': ProjectProgressTab,
-    'milestones': ProjectMilestonesTab,
     'budget': ProjectBudgetTab,
     'payments': ProjectPaymentsTab
   };
@@ -451,7 +494,8 @@ const handleProjectUpdated = async () => {
 onMounted(async () => {
   await Promise.all([
     loadCompanyProjectTree(),
-    filterTabsByPermission()
+    filterTabsByPermission(),
+    checkDropdownPermissions()
   ]);
 });
 
@@ -501,11 +545,15 @@ watch(searchText, () => {
 .main-content {
   flex: 1;
   display: flex;
-  overflow: hidden;
+  /* 移除 overflow: hidden，允许右侧面板内的标签页滚动 */
+  /* 左侧面板有独立的滚动设置，不受影响 */
 }
 
 .left-panel {
   width: 300px;
+  min-width: 300px;
+  max-width: 300px;
+  flex-shrink: 0;
   background: white;
   border-right: 1px solid #e4e7ed;
   display: flex;
@@ -579,7 +627,7 @@ watch(searchText, () => {
   flex: 1;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  /* 移除 overflow: hidden，允许内部组件控制滚动 */
 }
 
 .welcome-panel {
@@ -678,8 +726,10 @@ watch(searchText, () => {
 
 .project-tabs {
   flex: 1;
-  overflow: hidden;
-  margin: 0 24px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  margin: 24px;
+  min-height: 0;
 }
 
 .tab-label {
@@ -692,16 +742,24 @@ watch(searchText, () => {
   height: 100%;
   display: flex;
   flex-direction: column;
+  border: 1px solid #dcdfe6;
+}
+
+:deep(.el-tabs__header) {
+  flex-shrink: 0;
+  margin: 0; /* 移除默认边距 */
 }
 
 :deep(.el-tabs__content) {
   flex: 1;
-  overflow: hidden;
+  min-height: 0;
+  padding: 0; /* 移除默认内边距，让子组件自己控制 */
+  overflow: hidden; /* 确保内容不会撑开容器 */
 }
 
 :deep(.el-tab-pane) {
   height: 100%;
-  overflow-y: auto;
+  overflow: hidden; /* 确保标签页不会撑开容器 */
 }
 
 /* 自定义滚动条样式 */

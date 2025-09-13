@@ -14,7 +14,7 @@
       size="default"
     >
       <el-form-item label="收付款类型" prop="type">
-        <el-radio-group v-model="formData.type">
+        <el-radio-group v-model="formData.type" :disabled="mode === 'edit'">
           <el-radio label="income">收入</el-radio>
           <el-radio label="expense">支出</el-radio>
         </el-radio-group>
@@ -23,10 +23,11 @@
       <el-form-item label="单据编号" prop="receipt_no">
         <el-input
           v-model="formData.receipt_no"
-          placeholder="系统自动生成或手动输入"
+          :placeholder="mode === 'create' ? '系统自动生成或手动输入' : '不可修改'"
+          :readonly="mode === 'edit'"
           maxlength="50"
         >
-          <template #append>
+          <template v-if="mode === 'create'" #append>
             <el-button @click="generateReceiptNo">自动生成</el-button>
           </template>
         </el-input>
@@ -384,12 +385,12 @@ watch(
   }
 );
 
-// 监听类型变化，自动更新单据编号前缀
+// 监听类型变化，自动更新单据编号前缀（仅在创建模式下）
 watch(
   () => formData.value.type,
   () => {
-    // 如果单据编号是系统生成的，重新生成
-    if (formData.value.receipt_no && (formData.value.receipt_no.startsWith('SK') || formData.value.receipt_no.startsWith('FK'))) {
+    // 只在创建模式下生效，编辑模式下类型不可修改
+    if (props.mode === 'create' && formData.value.receipt_no && (formData.value.receipt_no.startsWith('SK') || formData.value.receipt_no.startsWith('FK'))) {
       generateReceiptNo();
     }
   }

@@ -4,7 +4,5 @@
 
 export * from './project';
 export * from './budget';
-export * from './milestone';
-export * from './progress';
 export * from './contract';
 export * from './payment';
